@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			rel="shortcut icon"
+			href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath fill='none' stroke='%23007bff' stroke-width='2' d='M12 2L1 9l1 1v11h4v-6h4v6h4v-6h4v6h4V10l1-1-11-7zm2 16h-4v-4h4v4zm6-6h-4v-4h4v4z'/%3E%3C/svg%3E"
+			type="image/svg+xml" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+			rel="stylesheet" />
+		<title>Home Control</title>
+		<link rel="stylesheet" href="/home.css" />
+	</head>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			font-family: 'Roboto', sans-serif;
+		}
+
+		html {
+			width: 100%;
+		}
+
+		body {
+			width: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			min-height: 100vh;
+			background-color: #101010;
+			margin: 0 auto;
+		}
+
+		.container {
+			position: relative;
+			width: 1400px;
+			display: flex;
+			justify-content: space-around;
+		}
+
+		.card {
+			position: relative;
+			width: 250px;
+			background: linear-gradient(0deg, #1b1b1b, #222, #1b1b1b);
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 300px;
+			border-radius: 4px;
+			text-align: center;
+			overflow: hidden;
+			transition: 0.5s;
+		}
+
+		.card:hover {
+			transform: translateY(-10px);
+			box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+		}
+
+		.percent {
+			position: relative;
+			width: 150px;
+			height: 150px;
+			border-radius: 50%;
+			box-shadow: inset 0 0 50px #000;
+			background: #222;
+			z-index: 1000;
+		}
+
+		.percent.number {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			border-radius: 50%;
+		}
+
+		.percent .number h2 {
+			color: #777;
+			font-weight: 700;
+			font-size: 28px;
+			transition: 0.5s;
+		}
+
+		.number {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			text-align: center;
+		}
+
+		.card:hover .percent .number h2 {
+			color: #fff;
+			font-size: 38px;
+		}
+
+		.percent .number h2 span {
+			font-size: 24px;
+			color: #777;
+		}
+
+		.card:hover .percent .number h2 span {
+			color: #fff;
+			transition: 0.5s;
+		}
+
+		.text {
+			position: relative;
+			color: #777;
+			margin-top: 20px;
+			font-weight: 700;
+			font-size: 20px;
+			letter-spacing: 1px;
+			text-transform: uppercase;
+			transition: 0.5s;
+		}
+
+		.card:hover .text {
+			color: #fff;
+		}
+
+		.controls {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.controls h3 {
+			color: #777;
+			margin: 20px 0px 20px;
+		}
+
+		.card:hover h3 {
+			color: #fff;
+			transition: 0.5s;
+		}
+
+		.controls label {
+			font-weight: 700;
+			font-size: 14px;
+			margin-bottom: 5px;
+			color: #777;
+		}
+
+		.card:hover label {
+			font-size: 14px;
+			color: #bebebe;
+			transition: 0.5s;
+		}
+
+		.controls input {
+			padding: 5px;
+			margin-bottom: 15px;
+			border-radius: 4px;
+			border: 1px solid rgba(255, 255, 255, 0.1);
+			background-color: rgba(255, 255, 255, 0.05);
+			font-size: 14px;
+			color: #fff;
+		}
+
+		.controls input::placeholder {
+			color: #999;
+		}
+
+		.controls button {
+			font-weight: 700;
+			padding: 10px 20px;
+			margin-top: 10px;
+			background-color: #007bff;
+			color: white;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			font-size: 14px;
+		}
+
+		.controls button:hover {
+			background-color: #0056b3;
+		}
+
+		.controls button:focus {
+			outline: none;
+		}
+
+		svg {
+			position: relative;
+			width: 150px;
+			height: 150px;
+			z-index: 1000;
+		}
+
+		svg circle {
+			width: 100%;
+			height: 100%;
+			fill: none;
+			stroke-width: 10;
+			stroke-linecap: round;
+			transform: translate(5px, 5px);
+		}
+
+		svg circle:nth-child(1) {
+			stroke: #191919;
+			stroke-dasharray: 440;
+			stroke-dashoffset: 0;
+		}
+
+		.card:nth-child(1) svg circle:nth-child(2) {
+			stroke: #007bff;
+			stroke-dasharray: 440; /* Circunferencia completa */
+			stroke-dashoffset: calc(440 - (440 * 25) / 100); /* Porcentaje a mostrar (25% en este caso) */
+		}
+
+		.card:nth-child(2) svg circle:nth-child(2) {
+			stroke: #90ee90;
+			stroke-dasharray: 440; /* Circunferencia completa */
+			stroke-dashoffset: calc(440 - (440 * 25) / 100); /* Porcentaje a mostrar (25% en este caso) */
+		}
+
+		.separador {
+			display: block;
+			width: 2px;
+			height: 300px;
+			background-color: rgba(255, 255, 255, 0.3);
+		}
+
+		.light {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		.light h2 {
+			margin-bottom: 15px;
+		}
+
+		#btnOn {
+			width: 80px;
+			height: 80px;
+			border-radius: 50%;
+			background-color: #007bff;
+			color: white;
+			font-size: 16px;
+			font-weight: bold;
+			margin: 5px 0;
+			cursor: pointer;
+			border: none;
+			outline: none;
+			transition: background-color 0.3s;
+		}
+
+		#btnOn:hover {
+			background-color: #0056b3;
+		}
+
+		#btnOn:focus {
+			box-shadow: 0 0 0 2px #fff, 0 0 0 4px #007bff;
+		}
+
+		#btnOff {
+			width: 80px;
+			height: 80px;
+			border-radius: 50%;
+			background-color: #dc3545;
+			color: white;
+			font-size: 16px;
+			font-weight: bold;
+			margin: 5px 0;
+			cursor: pointer;
+			border: none;
+			outline: none;
+			transition: background-color 0.3s;
+		}
+
+		#btnOff:hover {
+			background-color: #9c2833;
+		}
+
+		#btnOff:focus {
+			box-shadow: 0 0 0 2px #fff, 0 0 0 4px #dc3545;
+		}
+
+		@media (max-width: 1400px) {
+			.container {
+				width: 100%;
+				flex-direction: column;
+			}
+
+			.card {
+				margin: 20px auto;
+			}
+
+			.separador {
+				display: inline-block;
+				width: 100%;
+				height: 2px;
+				vertical-align: middle;
+			}
+		}
+	</style>
+	<body>
+		<div class="container">
+			<div class="card" id="temperature" data-value="25">
+				<div class="box">
+					<div class="percent">
+						<svg>
+							<circle cx="70" cy="70" r="70"></circle>
+							<circle cx="70" cy="70" r="70"></circle>
+						</svg>
+						<div class="number">
+							<h2>25<span>°C</span></h2>
+						</div>
+					</div>
+					<h2 class="text">Temperatura</h2>
+				</div>
+			</div>
+
+			<div class="card" id="humidity" data-value="70">
+				<div class="box">
+					<div class="percent">
+						<svg>
+							<circle cx="70" cy="70" r="70"></circle>
+							<circle cx="70" cy="70" r="70"></circle>
+						</svg>
+						<div class="number">
+							<h2>70<span>%</span></h2>
+						</div>
+					</div>
+					<h2 class="text">Humedad</h2>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="controls">
+					<h3>CONFIGURACIÓN AC</h3>
+					<label for="setTempOn">Temperatura de encendido:</label>
+					<input type="number" id="setTempOn" name="setTempOn" min="15" max="50" placeholder="Encendido actual: 34" />
+					<label for="setTempOff">Temperatura de apagado:</label>
+					<input type="number" id="setTempOff" name="setTempOff" min="15" max="50" placeholder="Apagado Actual: 33" />
+					<button onclick="sendTemperature()">CAMBIAR</button>
+				</div>
+			</div>
+
+			<div class="separador"></div>
+
+			<div class="card">
+				<div class="light">
+					<h2 class="text">INTERRUPTOR</h2>
+					<button class="button" id="btnOn" onclick="turnon()">ON</button>
+					<button class="button" id="btnOff" onclick="turnoff()">OFF</button>
+				</div>
+			</div>
+		</div>
+	</body>
+
+	<script>
+		var socket = new WebSocket('ws://' + window.location.hostname + ':81/');
+		socket.onopen = function () {
+			console.log('Conectado al servidor WebSocket');
+		};
+		/*--------------------------------------------- Mensaje de Encendido/Apagado Luz ----------------------------------------*/
+		const turnon = () => socket.send('LedOn');
+		const turnoff = () => socket.send('LedOff');
+
+		/*--------------------------------------------- Recibir temperatura y humedad desde ESP32 ----------------------------------------*/
+		socket.onmessage = function (event) {
+			console.log('Mensaje recibido del servidor:', event.data);
+			var data = event.data.trim();
+			if (data.startsWith('tmp-')) {
+				var temperature = parseInt(data.substring(4));
+				if (!isNaN(temperature)) {
+					updateTempPercentage('temperature', temperature.toFixed(1), '°C');
+				} else {
+					console.log('No se pudo convertir el número después de "tmp-" a un entero');
+				}
+			} else if (data.startsWith('hum-')) {
+				var humidity = parseInt(data.substring(4));
+				if (!isNaN(humidity)) {
+					updateHumPercentage('humidity', humidity.toFixed(1), '%');
+				} else {
+					console.log('No se pudo convertir el número después de "hum-" a un entero');
+				}
+			} else if (data.startsWith('settempon-')) {
+				var setTempOn = data.substring(9);
+				if (!isNaN(setTempOn)) {
+					cambiarNumeroPlaceholder('setTempOn', setTempOn);
+				} else {
+					console.log('No se pudo convertir el número después de "settempon-" a un entero');
+				}
+			} else if (data.startsWith('settempoff-')) {
+				var setTempOff = data.substring(10);
+				if (!isNaN(setTempOn)) {
+					cambiarNumeroPlaceholder('setTempOff', setTempOff);
+				} else {
+					console.log('No se pudo convertir el número después de "settempoff-" a un entero');
+				}
+			} else if (data.startsWith('ph1-')) {
+				var placeholder1 = data.substring(4);
+				if (!isNaN(placeholder1)) {
+					cambiarNumeroPlaceholder('setTempOn', placeholder1);
+				} else {
+					console.log('No se pudo convertir el número después de "ph1-" a un entero');
+				}
+			} else if (data.startsWith('ph2-')) {
+				var placeholder2 = data.substring(4);
+				if (!isNaN(placeholder2)) {
+					cambiarNumeroPlaceholder('setTempOff', placeholder2);
+				} else {
+					console.log('No se pudo convertir el número después de "ph2-" a un entero');
+				}
+			}
+		};
+
+		/*--------------------------------------------- Actualizacion % de la temperatura y Humedad ----------------------------------------*/
+		function updateTempPercentage(id, value, unit) {
+			const card = document.getElementById(id);
+			const text = card.querySelector('.number>h2');
+			const circle = card.querySelector('svg circle:nth-child(2)');
+
+			text.innerHTML = `${value}<span>${unit}</span>`;
+
+			const radius = circle.getAttribute('r');
+			const circumference = 2 * Math.PI * radius;
+
+			const offset = circumference - (value / 50) * circumference;
+			circle.style.strokeDashoffset = offset;
+
+			if (value < 25) {
+				circle.style.stroke = '#007bff';
+			} else {
+				circle.style.stroke = '#dc3545';
+			}
+		}
+
+		function updateHumPercentage(id, value, unit) {
+			const card = document.getElementById(id);
+			const text = card.querySelector('.number>h2');
+			const circle = card.querySelector('svg circle:nth-child(2)');
+
+			text.innerHTML = `${value}<span>${unit}</span>`;
+
+			const radius = circle.getAttribute('r');
+			const circumference = 2 * Math.PI * radius;
+
+			const offset = circumference - (value / 100) * circumference;
+			circle.style.strokeDashoffset = offset;
+
+			if (value <= 25) {
+				circle.style.stroke = '#ff9999';
+			} else if (value <= 50) {
+				circle.style.stroke = '#ffcc99';
+			} else if (value <= 75) {
+				circle.style.stroke = '#90ee90';
+			} else {
+				circle.style.stroke = '#56c4e3';
+			}
+		}
+
+		/*--------------------------------------------- Actualizacion Configuración Temperatura en Placeholders ----------------------------------------*/
+		function cambiarNumeroPlaceholder(id, nuevoNumero) {
+			const input = document.getElementById(id);
+			const placeholderActual = input.getAttribute('placeholder');
+			const nuevoPlaceholder = placeholderActual.replace(/\d+$/, String(nuevoNumero));
+			input.setAttribute('placeholder', nuevoPlaceholder);
+		}
+
+		/*--------------------------------------------- Envio datos encendido y apagado Aire ----------------------------------------*/
+		function sendTemperature() {
+			const setTempOn = document.getElementById('setTempOn').value;
+			const setTempOff = document.getElementById('setTempOff').value;
+			document.getElementById('setTempOn').value = '';
+			document.getElementById('setTempOff').value = '';
+
+			if (isNaN(setTempOn) || isNaN(setTempOff)) {
+				alert('Por favor introduzca valores de temperatura válidos');
+				return;
+			}
+
+			const tempOn = parseFloat(setTempOn);
+			const tempOff = parseFloat(setTempOff);
+
+			if (setTempOn < 15 || setTempOn > 50 || setTempOff < 15 || setTempOff > 50) {
+				alert('Los valores de temperatura deben estar entre 15 y 50');
+				return;
+			}
+
+			const message = {
+				type: 'set_temperatures',
+				valueOn: setTempOn,
+				valueOff: setTempOff,
+			};
+
+			if (confirm('¿Estás seguro de que quieres configurar las temperaturas?')) {
+				socket.send(JSON.stringify(message));
+			} else {
+				alert('Operación cancelada');
+			}
+		}
+	</script>
+</html>
