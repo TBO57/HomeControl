@@ -68,7 +68,7 @@ Para replicar este proyecto necesitarás:
  - Biblioteca para emisión de IR (IRremoteESP8266 o similar).
 4. Selecciona la placa ESP32 en el IDE y configura el puerto correcto.
 
-##Configuración
+## Configuración
 
 Antes de cargar el código:
   - Ajusta los pines del sensor DHT y del relé en el archivo HomeControl.ino.
@@ -82,7 +82,7 @@ Ejemplo de configuración de pines:
 
 (Ajusta según tu conexión física)
 
-##Uso
+## Uso
 
 1. Conecta el ESP32 a tu computadora.
 2. Compila y sube el programa al dispositivo.
